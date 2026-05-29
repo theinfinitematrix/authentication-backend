@@ -6,11 +6,11 @@ export const validate = (schema) => (req, res, next) => {
   if (!result.success) {
     const extractedError =
       result.error?.errors?.map((err) => ({
-        path: err.path[0],
+        path: err.path.join("."),
         message: err.message,
       })) || [];
 
-    throw new ApiError(422, "Received data is not valid", extractedError, "");
+    throw new ApiError(422, "Validation failed", extractedError);
   }
 
   req.body = result.data;
